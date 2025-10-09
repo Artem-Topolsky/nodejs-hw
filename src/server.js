@@ -3,6 +3,7 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
+import { errors } from "celebrate"; // 👈 додай це
 
 import { connectMongoDB } from "./db/connectMongoDB.js";
 import { logger } from "./middleware/logger.js";
@@ -16,8 +17,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(logger);
-
 app.use("/notes", notesRoutes);
+app.use(errors());
 app.use(notFoundHandler);
 app.use(errorHandler);
 

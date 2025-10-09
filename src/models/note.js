@@ -16,12 +16,14 @@ const noteSchema = new Schema(
         "Finance",
         "Health",
         "Important",
-        "Todo"
+        "Todo",
       ],
       default: "Todo",
     },
   },
   { timestamps: true }
 );
+
+noteSchema.index({ title: "text", content: "text" });
 
 export const Note = model("Note", noteSchema);
