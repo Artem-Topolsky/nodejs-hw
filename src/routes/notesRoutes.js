@@ -1,25 +1,32 @@
-import { Router } from "express";
-import { celebrate } from "celebrate";
+import { Router } from 'express';
+import { Segments, celebrate } from 'celebrate';
 import {
   getAllNotes,
   getNoteById,
   createNote,
   updateNote,
   deleteNote,
-} from "../controllers/notesController.js";
+} from '../controllers/notesController.js';
 import {
   getAllNotesSchema,
   noteIdSchema,
   createNoteSchema,
   updateNoteSchema,
-} from "../validations/notesValidation.js";
+} from '../validations/notesValidation.js';
 
 const router = Router();
 
-router.get("/", celebrate(getAllNotesSchema), getAllNotes);
-router.post("/", celebrate(createNoteSchema), createNote);
-router.get("/:noteId", celebrate(noteIdSchema), getNoteById);
-router.patch("/:noteId", celebrate(updateNoteSchema), updateNote);
-router.delete("/:noteId", celebrate(noteIdSchema), deleteNote);
+router.get("/notes", celebrate(getAllNotesSchema), getAllNotes);
+router.post("/notes", celebrate(createNoteSchema), createNote);
+router.get("/notes/:noteId", celebrate(noteIdSchema), getNoteById);
+router.patch(
+  "/notes/:noteId",
+  celebrate({
+    [Segments.PARAMS]: noteIdSchema[Segments.PARAMS],
+    [Segments.BODY]: updateNoteSchema[Segments.BODY],
+  }),
+  updateNote
+);
+router.delete("/notes/:noteId", celebrate(noteIdSchema), deleteNote);
 
 export default router;
