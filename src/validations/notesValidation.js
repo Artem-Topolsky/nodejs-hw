@@ -12,7 +12,7 @@ const objectIdValidator = (value, helpers) => {
 export const getAllNotesSchema = {
   [Segments.QUERY]: Joi.object({
     page: Joi.number().integer().min(1).default(1),
-    perPage: Joi.number().integer().min(5).max(50).default(10),
+    perPage: Joi.number().integer().min(5).max(20).default(10),
     tag: Joi.string().valid(...TAGS).optional(),
     search: Joi.string().allow(""),
   }),
@@ -36,7 +36,7 @@ export const createNoteSchema = {
     }),
     tag: Joi.string()
       .valid(...TAGS)
-      .required()
+      .optional()
       .messages({
         "string.base": "Tag must be a string",
         "any.only": `Tag must be one of: ${TAGS.join(", ")}`,
