@@ -7,7 +7,7 @@ import path from 'path';
 import { User } from '../models/user.js';
 import { Session } from '../models/session.js';
 import { createSession, setSessionCookies } from '../services/auth.js';
-import { sendEmail } from '../utils/sendMail.js';
+import { sendMail } from '../utils/sendMail.js';
 
 const templatePath = path.join(
   process.cwd(),
@@ -123,7 +123,7 @@ export const requestResetEmail = async (req, res, next) => {
   });
 
   try {
-    await sendEmail(email, 'Password Reset', html);
+    await sendMail(email, 'Password Reset', html);
     res.json({ message: 'Password reset email sent successfully' });
   } catch {
     next(
