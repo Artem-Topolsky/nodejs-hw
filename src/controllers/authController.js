@@ -123,7 +123,12 @@ export const requestResetEmail = async (req, res, next) => {
   });
 
   try {
-    await sendMail(email, 'Password Reset', html);
+    await sendMail({
+  from: process.env.SMTP_FROM,
+  to: email,
+  subject: 'Password Reset',
+  html,
+});
     res.json({ message: 'Password reset email sent successfully' });
   } catch {
     next(
@@ -151,7 +156,8 @@ export const resetPassword = async (req, res, next) => {
   } catch (err) {
     if (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError') {
       return next(createHttpError(401, 'Invalid or expired token'));
+    } else {
+      next(err);
     }
-    next(err);
   }
 };
